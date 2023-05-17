@@ -1,20 +1,93 @@
-// labrab4.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include "List.h"
+#include "Complex.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	List<int> list1;
+	list1.push_back(1);
+	list1.push_back(2);
+	list1.push_back(3);
+
+	List<int> list2;
+	list2.push_back(4);
+	list2.push_back(5);
+
+	List<int> list3 = list1 + list2;
+
+	std::cout << "List1: ";
+	for (int i = 0; i < list1.getSize(); i++) {
+		std::cout << list1[i] << " ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "List2: ";
+	for (int i = 0; i < list2.getSize(); i++) {
+		std::cout << list2[i] << " ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "List3: ";
+	for (int i = 0; i < list3.getSize(); i++) {
+		std::cout << list3[i] << " ";
+	}
+	std::cout << std::endl;
+
+	if (list1 != list1) {
+		std::cout << "List1 and List1 are not equal" << std::endl;
+	}
+	else {
+		std::cout << "List1 and List1 are equal" << std::endl;
+	}
+	if (list1 != list2) {
+		std::cout << "List1 and List2 are not equal" << std::endl;
+	}
+	else {
+		std::cout << "List1 and List2 are equal" << std::endl;
+	}
+
+	if (list1 != list3) {
+		std::cout << "List1 and List3 are not equal" << std::endl;
+	}
+	else {
+		std::cout << "List1 and List3 are equal" << std::endl;
+	}
+
+
+	List<Complex> list;
+	list.push_back(Complex(1.0, 2.0));
+	list.push_back(Complex(3.0, 4.0));
+
+	List<Complex> otherList;
+	otherList.push_back(Complex(5.0, 6.0));
+	otherList.push_back(Complex(7.0, 8.0));
+
+	List<Complex> combinedList = list + otherList;
+
+	std::cout << "List: ";
+	for (int i = 0; i < list.getSize(); i++) {
+		std::cout << list[i].getReal() << "+" << list[i].getImaginary() << "i ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "Other List: ";
+	for (int i = 0; i < otherList.getSize(); i++) {
+		std::cout << otherList[i].getReal() << "+" << otherList[i].getImaginary() << "i ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "Combined List: ";
+	for (int i = 0; i < combinedList.getSize(); i++) {
+		std::cout << combinedList[i].getReal() << "+" << combinedList[i].getImaginary() << "i ";
+	}
+	std::cout << std::endl;
+
+	if (list != otherList) {
+		std::cout << "List and Other List are not equal" << std::endl;
+	}
+	else {
+		std::cout << "List and Other List are equal" << std::endl;
+	}
+
+	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
