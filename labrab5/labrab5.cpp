@@ -1,20 +1,120 @@
-// labrab5.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+using namespace std;
 
-int main()
-{
-    std::cout << "Hello World!\n";
+class Vector {
+private:
+    double* data;  // указатель на массив данных
+    int size;      // размер вектора
+
+public:
+    // Конструктор по умолчанию
+    Vector() {
+        size = 0;
+        data = nullptr;
+    }
+
+    // Конструктор с параметром для создания вектора заданного размера
+    Vector(int n) {
+        size = n;
+        data = new double[size];
+    }
+
+    // Конструктор копирования
+    Vector(const Vector& other) {
+        size = other.size;
+        data = new double[size];
+        for (int i = 0; i < size; i++) {
+            data[i] = other.data[i];
+        }
+    }
+
+    // Деструктор
+    ~Vector() {
+        delete[] data;
+    }
+
+    // Функция ввода вектора с клавиатуры
+    void Input() {
+        cout << "Введите " << size << " элементов вектора: ";
+        for (int i = 0; i < size; i++) {
+            cin >> data[i];
+        }
+    }
+
+    // Функция вывода вектора на экран
+    void Print() {
+        cout << "[";
+        for (int i = 0; i < size; i++) {
+            cout << data[i];
+            if (i < size - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+
+    // Перегрузка операции присваивания
+    Vector& operator=(const Vector& other) {
+        if (this != &other) {
+            delete[] data;
+
+            size = other.size;
+            data = new double[size];
+            for (int i = 0; i < size; i++) {
+                data[i] = other.data[i];
+            }
+        }
+        return *this;
+    }
+
+    // Перегрузка операции сложения векторов
+    Vector operator+(const Vector& other) {
+        Vector result(size);
+        for (int i = 0; i < size; i++) {
+            result.data[i] = data[i] + other.data[i];
+        }
+        return result;
+    }
+
+    // Перегрузка операции доступа по индексу
+    double& operator[](int index) {
+        return data[index];
+    }
+
+    // Перегрузка операции добавления числа к вектору
+    Vector operator+(double value) {
+        Vector result(size);
+        for (int i = 0; i < size; i++) {
+            result.data[i] = data[i] + value;
+        }
+        return result;
+    }
+};
+
+int main() {
+    Vector v1(3);
+    cout << "Введите элементы первого вектора:\n";
+    v1.Input();
+
+    Vector v2(2);
+    cout << "Введите элементы второго вектора:\n";
+    v2.Input();
+
+    Vector v3 = v1 + v2;
+    cout << "Результат сложения векторов: ";
+    v3.Print();
+
+    int index;
+    cout << "Введите индекс элемента для доступа: ";
+    cin >> index;
+    cout << "Элемент с индексом " << index << ": " << v3[index] << endl;
+
+    double value;
+    cout << "Введите число для добавления к вектору: ";
+    cin >> value;
+    Vector v4 = v3 + value;
+    cout << "Результат добавления числа к вектору: ";
+    v4.Print();
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
