@@ -4,11 +4,15 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QGridLayout>
-#include <QPushButton>
 #include <QLabel>
 #include <QSpinBox>
 #include <QSlider>
 #include <QPlainTextEdit>
+
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QFileDialog>
+#include <QFile>
 
 QPlainTextEdit* pte;
 int pte_red = 0;
@@ -22,12 +26,16 @@ QSlider* s_red;
 QSlider* s_green;
 QSlider* s_blue;
 
+QTextEdit *text_edit;
+
 void populate_window(QWidget* widget);
 void setColor();
 
 void setRed(int color);
 void setGreen(int color);
 void setBlue(int color);
+
+void openFile();
 
 int main(int argc, char *argv[])
 {
@@ -39,7 +47,24 @@ int main(int argc, char *argv[])
     w.setCentralWidget(centralWidget);
 
     populate_window(centralWidget);
-//    w.populate_window();
+
+    // ---------------------------------------
+
+    QWidget *dialog_widget = new QWidget(&w);
+    dialog_widget->resize(500, 200);
+
+    QHBoxLayout dialog_layout;
+    dialog_widget->setLayout(&dialog_layout);
+
+    text_edit = new QTextEdit();
+    dialog_layout.addWidget(text_edit);
+
+    QPushButton *btn = new QPushButton();
+    dialog_widget->connect(btn, &QPushButton::clicked, dialog_widget, openFile);
+    btn->setText("Button");
+    dialog_layout.addWidget(btn);
+
+    // ---------------------------------------
 
     w.show();
     w.resize(500, 300);
@@ -99,17 +124,24 @@ void setRed(int color) {
     s_red->setValue(color);
     setColor();
 }
-
 void setGreen(int color) {
     pte_green = color;
     sp_green->setValue(color);
     s_green->setValue(color);
     setColor();
 }
-
 void setBlue(int color) {
     pte_blue = color;
     sp_blue->setValue(color);
     s_blue->setValue(color);
     setColor();
+}
+
+void openFile() {
+    QString file_name = QFileDialog::getOpenFileName();
+    QFile file(file_name);
+    file.open(QFile::OpenModeFlag::ReadOnly);
+
+    QByteArray file_content = file.readAll();
+    text_edit->setText(file_content);
 }
