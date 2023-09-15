@@ -10,7 +10,24 @@
 #include <QSlider>
 #include <QPlainTextEdit>
 
+QPlainTextEdit* pte;
+int pte_red = 0;
+int pte_green = 0;
+int pte_blue = 0;
+
+QSpinBox* sp_red;
+QSpinBox* sp_green;
+QSpinBox* sp_blue;
+QSlider* s_red;
+QSlider* s_green;
+QSlider* s_blue;
+
 void populate_window(QWidget* widget);
+void setColor();
+
+void setRed(int color);
+void setGreen(int color);
+void setBlue(int color);
 
 int main(int argc, char *argv[])
 {
@@ -39,9 +56,12 @@ void populate_window(QWidget* widget) {
     grid_layout->addWidget(l_green, 1, 0);
     grid_layout->addWidget(l_blue, 2, 0);
 
-    QSpinBox* sp_red = new QSpinBox();
-    QSpinBox* sp_green = new QSpinBox();
-    QSpinBox* sp_blue = new QSpinBox();
+    sp_red = new QSpinBox();
+    sp_green = new QSpinBox();
+    sp_blue = new QSpinBox();
+    widget->connect(sp_red, &QSpinBox::valueChanged, widget, setRed);
+    widget->connect(sp_green, &QSpinBox::valueChanged, widget, setGreen);
+    widget->connect(sp_blue, &QSpinBox::valueChanged, widget, setBlue);
     sp_red->setMaximum(255);
     sp_green->setMaximum(255);
     sp_blue->setMaximum(255);
@@ -49,9 +69,12 @@ void populate_window(QWidget* widget) {
     grid_layout->addWidget(sp_green, 1, 1);
     grid_layout->addWidget(sp_blue, 2, 1);
 
-    QSlider* s_red = new QSlider(Qt::Orientation::Horizontal);
-    QSlider* s_green = new QSlider(Qt::Orientation::Horizontal);
-    QSlider* s_blue = new QSlider(Qt::Orientation::Horizontal);
+    s_red = new QSlider(Qt::Orientation::Horizontal);
+    s_green = new QSlider(Qt::Orientation::Horizontal);
+    s_blue = new QSlider(Qt::Orientation::Horizontal);
+    widget->connect(s_red, &QSlider::valueChanged, widget, setRed);
+    widget->connect(s_green, &QSlider::valueChanged, widget, setGreen);
+    widget->connect(s_blue, &QSlider::valueChanged, widget, setBlue);
     s_red->setMaximum(255);
     s_green->setMaximum(255);
     s_blue->setMaximum(255);
@@ -59,6 +82,34 @@ void populate_window(QWidget* widget) {
     grid_layout->addWidget(s_green, 1, 2);
     grid_layout->addWidget(s_blue, 2, 2);
 
-    QPlainTextEdit* pte = new QPlainTextEdit();
+    pte = new QPlainTextEdit();
+    setColor();
+    pte->setEnabled(false);
     grid_layout->addWidget(pte, 0, 3, 0, 2);
+}
+
+void setColor() {
+    const QString templ("background-color: rgb(%1, %2, %3);");
+    pte->setStyleSheet(templ.arg(pte_red).arg(pte_green).arg(pte_blue));
+}
+
+void setRed(int color) {
+    pte_red = color;
+    sp_red->setValue(color);
+    s_red->setValue(color);
+    setColor();
+}
+
+void setGreen(int color) {
+    pte_green = color;
+    sp_green->setValue(color);
+    s_green->setValue(color);
+    setColor();
+}
+
+void setBlue(int color) {
+    pte_blue = color;
+    sp_blue->setValue(color);
+    s_blue->setValue(color);
+    setColor();
 }
